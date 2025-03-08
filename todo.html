@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reminder</title>
+    <link
+      rel="shortcut icon"
+      href="https://help.apple.com/assets/65DFA91B9E3ABE5AF306648B/65DFA91D9E3ABE5AF3066491/en_US/de7022b37872b74f3f3286acec4cc3c4.png"
+      type="image/x-icon"
+    />
+    <!-- bootstrap  -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- dust  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.7.5/dust-full.min.js"></script>
+
+    <!-- font awesome icons  -->
+    <script
+      src="https://kit.fontawesome.com/b78a585d56.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="./todo.css" />
+  </head>
+  <body class="m-0 p-0">
+    <div id="reminder-container" class="mt-5 row mx-auto">
+      <div class="col-4 left-section pt-5 border-0 border-4">
+        <div class="mx-auto w-100 d-flex justify-content-center">
+
+          <input type="text" class="add-input ps-2 search-reminder" placeholder="Search" oninput="filterItems(event)" />
+        </div>
+
+        <div class="status-section mx-auto row mt-3 d-flex">
+          <div class="col-5 mx-3 p-3 rounded">
+            <p class="d-flex justify-content-between m-0">
+              <span
+                class="p-1 bg-primary my-icon text-white rounded-circle "
+                role="button"
+              >
+                <i class="fa-solid fa-box-open"></i>
+              </span>
+
+              <span class="fw-bold fs-5"> 5 </span>
+            </p>
+            <p class="mb-0 mt-3">Today</p>
+          </div>
+          <div class="col-5 p-3 rounded">
+            <p class="d-flex justify-content-between m-0">
+              <span
+                class=" bg-danger my-icon text-white rounded-circle cursor-pointer"
+                role="button"
+              >
+              <i class="fa-regular fa-calendar-check"></i>
+              </span>
+
+              <span class="fw-bold fs-5"> 7 </span>
+            </p>
+            <p class="mb-0 mt-3">Scheduled</p>
+          </div>
+        </div>
+        <div  class="status-section row mt-3 d-flex mx-auto">
+          <div class="col-5 mx-3 p-3 rounded">
+            <p class="d-flex justify-content-between m-0">
+              <span
+                class="p-1 bg-warning my-icon text-white rounded-circle "
+                role="button"
+              >
+                <i class="fa-solid fa-box-open"></i>
+              </span>
+
+              <span class="fw-bold fs-5"> 10 </span>
+            </p>
+            <p class="mb-0 mt-3">Total</p>
+          </div>
+          <div class="col-5 p-3 rounded">
+            <p class="d-flex justify-content-between m-0">
+              <span
+                class=" bg-success my-icon text-white rounded-circle cursor-pointer"
+                role="button"
+              >
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="fw-bold fs-5"> 2 </span>
+            </p>
+            <p class="mb-0 mt-3">Completed</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-8 right-section pt-5 ps-3">
+        <div>
+          <h3>Reminders</h3>
+        </div>
+
+        <div id="reminder-list"></div>
+        <form
+          onsubmit="addReminder(event)"
+          class="ps-1 d-flex mt-3 border-bottom-2"
+        >
+          <input type="radio" />
+          <input id="reminderTitle" class="add-input ps-2 w-100" type="text" />
+        </form>
+
+        <!-- Dust.js Template -->
+        <script id="reminder-template" type="text/x-dust-template">
+
+          {#reminders}
+              <div class="reminder-item mt-3  pb-1 d-flex align-items-center">
+                <input class='m-1 p-1' type="radio" />
+                <p class='m-0 ms-1'>{item}</p>
+              </div>
+          {/reminders}
+        </script>
+      </div>
+    </div>
+
+    <script src="./todo.js"></script>
+
+    <!-- bootstrap links  -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
