@@ -31,15 +31,19 @@
     <div id="reminder-container" class="mt-5 row mx-auto">
       <div class="col-4 left-section pt-5 border-0 border-4">
         <div class="mx-auto w-100 d-flex justify-content-center">
-
-          <input type="text" class="add-input ps-2 search-reminder" placeholder="Search" oninput="filterItems(event)" />
+          <input
+            type="text"
+            class="add-input ps-2 search-reminder"
+            placeholder="Search"
+            oninput="filterItems(event)"
+          />
         </div>
 
         <div class="status-section mx-auto row mt-3 d-flex">
-          <div class="col-5 mx-3 p-3 rounded">
+          <div class="col-5 mx-3 p-3 rounded" role="button" onclick="showAllReminders()">
             <p class="d-flex justify-content-between m-0">
               <span
-                class="p-1 bg-primary my-icon text-white rounded-circle "
+                class="p-1 bg-primary my-icon text-white rounded-circle"
                 role="button"
               >
                 <i class="fa-solid fa-box-open"></i>
@@ -47,15 +51,15 @@
 
               <span class="fw-bold fs-5"> 5 </span>
             </p>
-            <p class="mb-0 mt-3">Today</p>
+            <p class="mb-0 mt-3">Total</p>
           </div>
-          <div class="col-5 p-3 rounded">
+          <div class="col-5 p-3 rounded" role="button" >
             <p class="d-flex justify-content-between m-0">
               <span
-                class=" bg-danger my-icon text-white rounded-circle cursor-pointer"
+                class="bg-danger my-icon text-white rounded-circle cursor-pointer"
                 role="button"
               >
-              <i class="fa-regular fa-calendar-check"></i>
+                <i class="fa-regular fa-calendar-check"></i>
               </span>
 
               <span class="fw-bold fs-5"> 7 </span>
@@ -63,11 +67,11 @@
             <p class="mb-0 mt-3">Scheduled</p>
           </div>
         </div>
-        <div  class="status-section row mt-3 d-flex mx-auto">
-          <div class="col-5 mx-3 p-3 rounded">
+        <div class="status-section row mt-3 d-flex mx-auto">
+          <div class="col-5 mx-3 p-3 rounded" role="button" onclick="showAllPendingReminders()">
             <p class="d-flex justify-content-between m-0">
               <span
-                class="p-1 bg-warning my-icon text-white rounded-circle "
+                class="p-1 bg-warning my-icon text-white rounded-circle"
                 role="button"
               >
                 <i class="fa-solid fa-box-open"></i>
@@ -75,12 +79,12 @@
 
               <span class="fw-bold fs-5"> 10 </span>
             </p>
-            <p class="mb-0 mt-3">Total</p>
+            <p class="mb-0 mt-3">Pending</p>
           </div>
-          <div class="col-5 p-3 rounded">
-            <p class="d-flex justify-content-between m-0">
+          <div class="col-5 p-3 rounded" role="button">
+            <p class="d-flex justify-content-between m-0" onclick="showAllCompletedReminders()">
               <span
-                class=" bg-success my-icon text-white rounded-circle cursor-pointer"
+                class="bg-success my-icon text-white rounded-circle cursor-pointer"
                 role="button"
               >
                 <i class="fa-solid fa-check"></i>
@@ -92,26 +96,35 @@
           </div>
         </div>
       </div>
-      <div class="col-8 right-section pt-5 ps-3">
-        <div>
-          <h3>Reminders</h3>
+
+      <div class="col-8 right-section pt-3 ps-3">
+        <div class="d-flex justify-content-end pe-3 ">
+          <span role="button" class="fs-5" 
+          onclick="showForm()">
+            <i class="fa-solid fa-plus"></i>
+          </span>
+        </div>
+        <div class="fw-bold pe-3 text-primary d-flex justify-content-between">
+          <p class="fs-3">Reminders</p>
+          <p class="fs-3">3</p>
         </div>
 
         <div id="reminder-list"></div>
         <form
           onsubmit="addReminder(event)"
-          class="ps-1 d-flex mt-3 border-bottom-2"
+          id="input-form"
+          class="ps-1 d-flex mt-3 border-bottom-2 hide-element"
         >
           <input type="radio" />
-          <input id="reminderTitle" class="add-input ps-2 w-100" type="text" />
+          <input id="reminderTitle" class="add-input ps-2 w-100" type="text" onblur="hideForm()" />
         </form>
 
         <!-- Dust.js Template -->
         <script id="reminder-template" type="text/x-dust-template">
 
           {#reminders}
-              <div class="reminder-item mt-3  pb-1 d-flex align-items-center">
-                <input class='m-1 p-1' type="radio" />
+              <div class="reminder-item mt-3  pb-1 d-flex align-items-center" >
+                <input {#isCompleted}checked{/isCompleted} onchange="toggleReminder(this)" class='reminder-checkbox m-1 p-1' type="radio" data-id="{id}"/>
                 <p class='m-0 ms-1'>{item}</p>
               </div>
           {/reminders}

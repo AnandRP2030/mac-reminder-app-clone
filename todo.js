@@ -1,31 +1,32 @@
 const dustData = {
-  reminders :  [
+  reminders: [
     {
+      id: 1,
       item: "Buy phone",
       isCompleted: false,
     },
     {
+      id: 2,
       item: "Go to gym",
       isCompleted: false,
     },
-  ]
-}
+  ],
+};
+
+let { reminders } = dustData;
 
 
-let {reminders} = dustData;
+const form = document.getElementById("input-form");
+const showForm = () => {
+  form.classList.remove("hide-element");
+  const input = document.getElementById("reminderTitle");
+  input.focus();
+};
 
-const allReminders = [
-  {
-    item: "Buy phone",
-    isCompleted: false,
-  },
-  {
-    item: "Go to gym",
-    isCompleted: false,
-  },
-];
+const hideForm = () => {
+  form.classList.add("hide-element");
+};
 function addReminder(e) {
-  console.log("ee", e);
   e.preventDefault();
   const input = document.getElementById("reminderTitle");
   const item = input.value;
@@ -33,21 +34,36 @@ function addReminder(e) {
     return;
   }
 
-  reminders.push({ item, isCompleted: false });
-  allReminders.push({ item, isCompleted: false });
+  reminders.push({ id: createUniqueId(), item, isCompleted: false });
   input.value = "";
   renderReminders();
 }
 
-function renderReminders() {
+function renderReminders(filteredReminders = reminders) {
   const template = document.getElementById("reminder-template").innerHTML;
   const compiled = dust.compile(template, "reminderTemplate");
+ console.log('filter', filteredReminders)
   dust.loadSource(compiled);
-  dust.render("reminderTemplate", { reminders }, function (err, out) {
-    document.getElementById("reminder-list").innerHTML = out;
-  });
+  dust.render(
+    "reminderTemplate",
+    { reminders: filteredReminders },
+    function (err, out) {
+      document.getElementById("reminder-list").innerHTML = out;
+    }
+  );
+}
 
-console.log('dust data', dustData)
+const showAllPendingReminders = () => {
+  const pendingReminders = reminders.filter((r) => !r.isCompleted);
+  renderReminders(pendingReminders)
+}
+const showAllCompletedReminders = () => {
+  const completedReminders = reminders.filter((r) => r.isCompleted);
+  console.log('comp', completedReminders)
+  renderReminders(completedReminders)
+}
+const showAllReminders = () => {
+  renderReminders(reminders)
 }
 
 renderReminders();
@@ -55,14 +71,24 @@ renderReminders();
 const filterItems = (e) => {
   const value = e.target.value;
 
-  if (!value) {
-    reminders = [...allReminders];
-  } else {
-    const filteredItems = allReminders.filter((r) =>
-      r.item.toLowerCase().includes(value.toLowerCase())
-    );
-    reminders = [...filteredItems];
-  }
+  const filteredItems = reminders.filter((r) =>
+    r.item.toLowerCase().includes(value.toLowerCase())
+  );
+  renderReminders(filteredItems);
+};
 
+const taskCompleted = (i) => {
+  reminders[i].isCompleted = true;
   renderReminders();
 };
+
+const createUniqueId = () => {
+  return Date.now();
+};
+
+const toggleReminder = (checkbox) => {
+  const reminderId = parseInt(checkbox.dataset.id, 10);
+  const reminder = reminders.find((rem) => rem.id === reminderId);
+  reminder.isCompleted = !reminder.isCompleted;
+  renderReminders();
+}

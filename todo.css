@@ -13,6 +13,10 @@ body {
   border-bottom-right-radius: 10px;
 }
 
+.hide-element {   
+  display: none !important;
+}
+
 /* left section  */
 .left-section {
   background-color: #e6e6e5;
