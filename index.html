@@ -39,71 +39,16 @@
           />
         </div>
 
-        <div class="status-section mx-auto row mt-3 d-flex">
-          <div class="col-5 mx-3 p-3 rounded" role="button" onclick="showAllReminders()">
-            <p class="d-flex justify-content-between m-0">
-              <span
-                class="p-1 bg-primary my-icon text-white rounded-circle"
-                role="button"
-              >
-                <i class="fa-solid fa-box-open"></i>
-              </span>
-
-              <span class="fw-bold fs-5"> 5 </span>
-            </p>
-            <p class="mb-0 mt-3">Total</p>
-          </div>
-          <div class="col-5 p-3 rounded" role="button" >
-            <p class="d-flex justify-content-between m-0">
-              <span
-                class="bg-danger my-icon text-white rounded-circle cursor-pointer"
-                role="button"
-              >
-                <i class="fa-regular fa-calendar-check"></i>
-              </span>
-
-              <span class="fw-bold fs-5"> 7 </span>
-            </p>
-            <p class="mb-0 mt-3">Scheduled</p>
-          </div>
-        </div>
-        <div class="status-section row mt-3 d-flex mx-auto">
-          <div class="col-5 mx-3 p-3 rounded" role="button" onclick="showAllPendingReminders()">
-            <p class="d-flex justify-content-between m-0">
-              <span
-                class="p-1 bg-warning my-icon text-white rounded-circle"
-                role="button"
-              >
-                <i class="fa-solid fa-box-open"></i>
-              </span>
-
-              <span class="fw-bold fs-5"> 10 </span>
-            </p>
-            <p class="mb-0 mt-3">Pending</p>
-          </div>
-          <div class="col-5 p-3 rounded" role="button">
-            <p class="d-flex justify-content-between m-0" onclick="showAllCompletedReminders()">
-              <span
-                class="bg-success my-icon text-white rounded-circle cursor-pointer"
-                role="button"
-              >
-                <i class="fa-solid fa-check"></i>
-              </span>
-
-              <span class="fw-bold fs-5"> 2 </span>
-            </p>
-            <p class="mb-0 mt-3">Completed</p>
-          </div>
-        </div>
+        <div id="status-container"></div>
       </div>
 
       <div class="col-8 right-section pt-3 ps-3">
-        <div class="d-flex justify-content-end pe-3 ">
-          <span role="button" class="fs-5" 
-          onclick="showForm()">
+        <div class="d-flex justify-content-end pe-3">
+          <span role="button" class="fs-5" onclick="showForm()">
             <i class="fa-solid fa-plus"></i>
           </span>
         </div>
+        <!-- active section title & count -->
         <div class="fw-bold pe-3 text-primary d-flex justify-content-between">
           <p class="fs-3">Reminders</p>
           <p class="fs-3">3</p>
@@ -116,10 +61,72 @@
           class="ps-1 d-flex mt-3 border-bottom-2 hide-element"
         >
           <input type="radio" />
-          <input id="reminderTitle" class="add-input ps-2 w-100" type="text" onblur="hideForm()" />
+          <input
+            id="reminderTitle"
+            class="add-input ps-2 w-100"
+            type="text"
+            onblur="hideForm()"
+          />
         </form>
 
-        <!-- Dust.js Template -->
+        <!-- dust.js template for status  -->
+
+        <script id="status-template" type="text/x-dust-template">
+          <div class="status-section mx-auto row mt-3 d-flex">
+            <div class="col-5 mx-3 p-3 rounded" role="button" onclick="showAllReminders()">
+              <p class="d-flex justify-content-between m-0">
+                <span class="p-1 bg-primary my-icon text-white rounded-circle"
+                  role="button"
+                >
+                  <i class="fa-solid fa-box-open"></i>
+                </span>
+
+                <span class="fw-bold fs-5"> {total} </span>
+              </p>
+              <p class="mb-0 mt-3">Total</p>
+            </div>
+            <div class="col-5 p-3 rounded" role="button" >
+              <p class="d-flex justify-content-between m-0">
+                <span class="bg-danger my-icon text-white rounded-circle cursor-pointer"
+                  role="button"
+                >
+                  <i class="fa-regular fa-calendar-check"></i>
+                </span>
+
+                <span class="fw-bold fs-5"> - </span>
+              </p>
+              <p class="mb-0 mt-3"></p>
+            </div>
+          </div>
+          <div class="status-section row mt-3 d-flex mx-auto">
+            <div class="col-5 mx-3 p-3 rounded" role="button" onclick="showAllPendingReminders()">
+              <p class="d-flex justify-content-between m-0">
+                <span class="p-1 bg-warning my-icon text-white rounded-circle"
+                  role="button"
+                >
+                  <i class="fa-solid fa-box-open"></i>
+                </span>
+
+                <span class="fw-bold fs-5"> {pending} </span>
+              </p>
+              <p class="mb-0 mt-3">Pending</p>
+            </div>
+            <div class="col-5 p-3 rounded" role="button" onclick="showAllCompletedReminders()">
+              <p class="d-flex justify-content-between m-0" >
+                <span class="bg-success my-icon text-white rounded-circle cursor-pointer"
+                  role="button"
+                >
+                  <i class="fa-solid fa-check"></i>
+                </span>
+
+                <span class="fw-bold fs-5"> {completed} </span>
+              </p>
+              <p class="mb-0 mt-3">Completed</p>
+            </div>
+          </div>
+        </script>
+
+        <!-- Dust.js Template for rendering reminders -->
         <script id="reminder-template" type="text/x-dust-template">
 
           {#reminders}

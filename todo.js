@@ -1,20 +1,15 @@
-const dustData = {
-  reminders: [
-    {
-      id: 1,
-      item: "Buy phone",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      item: "Go to gym",
-      isCompleted: false,
-    },
-  ],
-};
-
-let { reminders } = dustData;
-
+let reminders = [
+  {
+    id: 1,
+    item: "Buy phone",
+    isCompleted: false,
+  },
+  {
+    id: 2,
+    item: "Go to gym",
+    isCompleted: false,
+  },
+];
 
 const form = document.getElementById("input-form");
 const showForm = () => {
@@ -42,7 +37,7 @@ function addReminder(e) {
 function renderReminders(filteredReminders = reminders) {
   const template = document.getElementById("reminder-template").innerHTML;
   const compiled = dust.compile(template, "reminderTemplate");
- console.log('filter', filteredReminders)
+  console.log("filter", filteredReminders);
   dust.loadSource(compiled);
   dust.render(
     "reminderTemplate",
@@ -51,22 +46,55 @@ function renderReminders(filteredReminders = reminders) {
       document.getElementById("reminder-list").innerHTML = out;
     }
   );
+
+  renderCounts();
 }
+
+const renderCounts = () => {
+  const total = reminders.length;
+  const completed = reminders.filter((rem) => rem.isCompleted).length;
+  const pending = total - completed;
+  const data = {
+    total,
+    completed,
+    pending,
+  };
+  const template = document.getElementById("status-template").innerHTML;
+  const compiled = dust.compile(template, "status-template");
+  dust.loadSource(compiled);
+  dust.render("status-template", data, (err, out) => {
+    document.getElementById("status-container").innerHTML = out;
+  });
+};
+
+const renderSectionTitle = ({ title, count }) => {
+  
+};
 
 const showAllPendingReminders = () => {
   const pendingReminders = reminders.filter((r) => !r.isCompleted);
-  renderReminders(pendingReminders)
-}
+  const data = { title: "Pending", count: pendingReminders.length };
+  renderReminders(pendingReminders);
+  renderSectionTitle(data);
+};
 const showAllCompletedReminders = () => {
+  console.log('workin')
   const completedReminders = reminders.filter((r) => r.isCompleted);
-  console.log('comp', completedReminders)
-  renderReminders(completedReminders)
-}
+  const data = { title: "Completed", count: completedReminders.length };
+  renderReminders(completedReminders);
+  renderSectionTitle(data)
+};
 const showAllReminders = () => {
-  renderReminders(reminders)
-}
+  renderReminders(reminders);
+  const data = { title: "All Reminders", count: reminders.length };
+};
 
 renderReminders();
+
+renderSectionTitle({
+  title: "All reminders",
+  count: reminders.length
+});
 
 const filterItems = (e) => {
   const value = e.target.value;
@@ -91,4 +119,4 @@ const toggleReminder = (checkbox) => {
   const reminder = reminders.find((rem) => rem.id === reminderId);
   reminder.isCompleted = !reminder.isCompleted;
   renderReminders();
-}
+};
