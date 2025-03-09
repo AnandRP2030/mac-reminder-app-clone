@@ -23,7 +23,6 @@ This is a simple **Reminder App** built using **HTML, JavaScript, Bootstrap, and
 ### 1. Clone the Repository
 ```sh
  git clone https://github.com/yourusername/reminder-app.git
- cd reminder-app
 ```
 
 ### 2. Open `index.html`
@@ -35,7 +34,7 @@ reminder-app/
 │── index.html          # Main HTML file
 │── todo.js             # JavaScript logic for reminders
 │── todo.css            # Custom styles
-│── assets/             # Additional resources (icons, fonts, etc.)
+(icons, fonts, etc.)
 ```
 
 ## Functions & Event Handling
