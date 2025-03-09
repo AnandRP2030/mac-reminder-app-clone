@@ -42,17 +42,23 @@
         <div id="status-container"></div>
       </div>
 
-      <div class="col-8 right-section pt-3 ps-3">
+      <div class="col-8 right-section pt-3 ps-3 overflow-auto h-100">
         <div class="d-flex justify-content-end pe-3">
           <span role="button" class="fs-5" onclick="showForm()">
             <i class="fa-solid fa-plus"></i>
           </span>
         </div>
         <!-- active section title & count -->
-        <div class="fw-bold pe-3 text-primary d-flex justify-content-between">
-          <p class="fs-3">Reminders</p>
-          <p class="fs-3">3</p>
-        </div>
+         <div id="active-section-header">
+
+         </div>
+         <script id="active-section-template" type="text/x-dust-template">
+           <div class="fw-bold pe-3 text-primary d-flex justify-content-between">
+             <p class="fs-3">{title}</p>
+             <p class="fs-3">{count}</p>
+           </div>
+
+         </script>
 
         <div id="reminder-list"></div>
         <form
@@ -60,7 +66,7 @@
           id="input-form"
           class="ps-1 d-flex mt-3 border-bottom-2 hide-element"
         >
-          <input type="radio" />
+          <input type="checkbox" />
           <input
             id="reminderTitle"
             class="add-input ps-2 w-100"
@@ -85,17 +91,16 @@
               </p>
               <p class="mb-0 mt-3">Total</p>
             </div>
-            <div class="col-5 p-3 rounded" role="button" >
+            <div class="col-5 p-3 rounded" role="button" onclick="resetAll()">
               <p class="d-flex justify-content-between m-0">
                 <span class="bg-danger my-icon text-white rounded-circle cursor-pointer"
                   role="button"
-                >
-                  <i class="fa-regular fa-calendar-check"></i>
+                ><i class="fa-solid fa-trash"></i>
                 </span>
 
-                <span class="fw-bold fs-5"> - </span>
+                <span class="fw-bold fs-5"> </span>
               </p>
-              <p class="mb-0 mt-3"></p>
+              <p class="mb-0 mt-3">Reset All </p>
             </div>
           </div>
           <div class="status-section row mt-3 d-flex mx-auto">
@@ -130,9 +135,17 @@
         <script id="reminder-template" type="text/x-dust-template">
 
           {#reminders}
-              <div class="reminder-item mt-3  pb-1 d-flex align-items-center" >
-                <input {#isCompleted}checked{/isCompleted} onchange="toggleReminder(this)" class='reminder-checkbox m-1 p-1' type="radio" data-id="{id}"/>
-                <p class='m-0 ms-1'>{item}</p>
+              <div class="reminder-item mt-3 justify-content-between pb-1 d-flex align-items-center" >
+                <div class='d-flex'>
+
+                  <input {#isCompleted}checked{/isCompleted} onchange="toggleReminder(this)" class='reminder-checkbox m-1 p-1 rounded-circle' type="checkbox" data-id="{id}"/>
+                  <p class='m-0 ms-1'>{item}</p>
+                </div>
+
+                <span class="text-danger my-icon pe-3 rounded-circle cursor-pointer"
+                  role="button" data-id={id} onclick={deleteReminder(this)}
+                ><i class="fa-solid fa-trash"></i>
+                </span>
               </div>
           {/reminders}
         </script>

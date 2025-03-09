@@ -1,15 +1,10 @@
-let reminders = [
-  {
-    id: 1,
-    item: "Buy phone",
-    isCompleted: false,
-  },
-  {
-    id: 2,
-    item: "Go to gym",
-    isCompleted: false,
-  },
-];
+let reminders = [];
+
+const TODO_STATUS = {
+  ALL_REMINDERS: "All Reminders",
+  PENDING : "Pending", 
+  COMPLETED: "Completed",
+}
 
 const form = document.getElementById("input-form");
 const showForm = () => {
@@ -31,13 +26,17 @@ function addReminder(e) {
 
   reminders.push({ id: createUniqueId(), item, isCompleted: false });
   input.value = "";
+  
   renderReminders();
+  renderSectionTitle({
+    title: TODO_STATUS.ALL_REMINDERS,
+    count: reminders.length
+  });
 }
 
 function renderReminders(filteredReminders = reminders) {
   const template = document.getElementById("reminder-template").innerHTML;
   const compiled = dust.compile(template, "reminderTemplate");
-  console.log("filter", filteredReminders);
   dust.loadSource(compiled);
   dust.render(
     "reminderTemplate",
@@ -67,32 +66,37 @@ const renderCounts = () => {
   });
 };
 
-const renderSectionTitle = ({ title, count }) => {
-  
+const renderSectionTitle = (data) => {
+  const template = document.getElementById("active-section-template").innerHTML;
+  const compiled = dust.compile(template, 'active-section-template');
+  dust.loadSource(compiled);
+  dust.render("active-section-template", data, (err, out) => {
+    document.getElementById("active-section-header").innerHTML = out;
+  })
 };
 
 const showAllPendingReminders = () => {
   const pendingReminders = reminders.filter((r) => !r.isCompleted);
-  const data = { title: "Pending", count: pendingReminders.length };
+  const data = { title: TODO_STATUS.PENDING, count: pendingReminders.length };
   renderReminders(pendingReminders);
   renderSectionTitle(data);
 };
 const showAllCompletedReminders = () => {
-  console.log('workin')
   const completedReminders = reminders.filter((r) => r.isCompleted);
-  const data = { title: "Completed", count: completedReminders.length };
+  const data = { title: TODO_STATUS.COMPLETED, count: completedReminders.length };
   renderReminders(completedReminders);
   renderSectionTitle(data)
 };
 const showAllReminders = () => {
   renderReminders(reminders);
-  const data = { title: "All Reminders", count: reminders.length };
+  const data = { title: TODO_STATUS.ALL_REMINDERS, count: reminders.length };
+  renderSectionTitle(data);
 };
 
 renderReminders();
 
 renderSectionTitle({
-  title: "All reminders",
+  title: TODO_STATUS.ALL_REMINDERS,
   count: reminders.length
 });
 
@@ -105,10 +109,6 @@ const filterItems = (e) => {
   renderReminders(filteredItems);
 };
 
-const taskCompleted = (i) => {
-  reminders[i].isCompleted = true;
-  renderReminders();
-};
 
 const createUniqueId = () => {
   return Date.now();
@@ -119,4 +119,27 @@ const toggleReminder = (checkbox) => {
   const reminder = reminders.find((rem) => rem.id === reminderId);
   reminder.isCompleted = !reminder.isCompleted;
   renderReminders();
+  renderSectionTitle({
+    title: TODO_STATUS.ALL_REMINDERS,
+    count: reminders.length
+  });
 };
+
+const resetAll = () => {
+  reminders = [];
+  renderReminders();
+  renderSectionTitle({
+    title: TODO_STATUS.ALL_REMINDERS,
+    count: reminders.length
+  });
+}
+const deleteReminder = (item) => {
+  const id = parseInt(item.dataset.id, 10);
+  const newReminders = reminders.filter((r) => r.id !== id);
+  reminders = [...newReminders];
+  renderReminders(newReminders);
+  renderSectionTitle({
+    title: TODO_STATUS.ALL_REMINDERS,
+    count: newReminders.length
+  });
+}
