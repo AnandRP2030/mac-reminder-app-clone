@@ -66,13 +66,18 @@
           id="input-form"
           class="ps-1 d-flex mt-3 border-bottom-2 hide-element"
         >
-          <input type="checkbox" />
           <input
             id="reminderTitle"
             class="add-input ps-2 w-100"
             type="text"
-            onblur="hideForm()"
+            onblur="setTimeout(hideForm, 100)"
           />
+
+          
+            <button type="submit" class="bg-white border-0" >
+              <i class="fa-solid fa-check"></i>
+            </button>
+
         </form>
 
         <!-- dust.js template for status  -->

@@ -17,6 +17,7 @@ const hideForm = () => {
   form.classList.add("hide-element");
 };
 function addReminder(e) {
+  console.log('ee', e)
   e.preventDefault();
   const input = document.getElementById("reminderTitle");
   const item = input.value;
